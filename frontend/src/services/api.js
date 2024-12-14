@@ -64,3 +64,26 @@ export const deleteMaintenanceTask = async (taskId) => {
   const response = await axios.delete(`${API_BASE_URL}/maintenance/${taskId}`);
   return response.data;
 };
+
+export const fetchMaintenanceXML = async () => {
+  const response = await axios.get(`${API_BASE_URL}/maintenance/xml`, {
+    headers: {
+      'Content-Type': 'application/xml',
+    },
+    responseType: 'blob', // Ensure the response is treated as a file
+  });
+  return response.data;
+};
+
+export const importMaintenanceXML = async (xmlFile) => {
+  const formData = new FormData();
+  formData.append('xml', xmlFile);
+
+  const response = await axios.post(`${API_BASE_URL}/maintenance/xml`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+
+  return response.data;
+};

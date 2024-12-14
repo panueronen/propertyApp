@@ -4,14 +4,15 @@ const connectDB = require('./config/db');
 const cors = require('cors');
 
 const app = express();
+const xmlparser = require('express-xml-bodyparser');
 app.use(cors({
-    origin: 'http://localhost:5173', // Replace with your frontend URL
+    origin: 'http://localhost:5173', 
 }));
 
 connectDB();
 
-
-app.use(express.json());
+app.use(express.json()); // Built-in body parser for JSON
+app.use(xmlparser()); // For parsing XML requests
 
 //Routes
 const propertyRoutes = require('./routes/propertyRoutes');

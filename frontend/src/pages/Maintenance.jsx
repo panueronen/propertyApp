@@ -6,6 +6,8 @@ import {
   deleteMaintenanceTask,
   fetchProperties,
   fetchTenants,
+  fetchMaintenanceXML,
+  importMaintenanceXML, // Import the XML import function
 } from '../services/api';
 
 const Maintenance = () => {
@@ -18,6 +20,7 @@ const Maintenance = () => {
     tenantId: '',
     priority: 'medium',
   });
+  const [xmlFile, setXmlFile] = useState(null); // State for the uploaded XML file
 
   // Fetch tasks, properties, and tenants on mount
   useEffect(() => {
@@ -29,7 +32,6 @@ const Maintenance = () => {
           fetchTenants(),
         ]);
 
-        console.log('Fetched Tasks:', taskData);
         setTasks(taskData);
         setProperties(propertyData);
         setTenants(tenantData);
@@ -72,6 +74,42 @@ const Maintenance = () => {
     } catch (error) {
       console.error('Error deleting task:', error);
     }
+  };
+
+  const handleDownloadXML = async () => {
+    try {
+      const xmlData = await fetchMaintenanceXML();
+      const blob = new Blob([xmlData], { type: 'application/xml' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'maintenance_requests.xml';
+      link.click();
+      URL.revokeObjectURL(link.href);
+    } catch (error) {
+      console.error('Error downloading XML:', error);
+    }
+  };
+
+  const handleUploadXML = async () => {
+    if (!xmlFile) {
+      alert('Please select an XML file to upload.');
+      return;
+    }
+
+    try {
+      const result = await importMaintenanceXML(xmlFile);
+      alert(result.message || 'XML imported successfully!');
+      // Refresh tasks after import
+      const updatedTasks = await fetchMaintenanceTasks();
+      setTasks(updatedTasks);
+    } catch (error) {
+      console.error('Error importing XML:', error);
+      alert('Failed to import XML.');
+    }
+  };
+
+  const handleFileChange = (e) => {
+    setXmlFile(e.target.files[0]); // Set the selected XML file
   };
 
   return (
@@ -159,6 +197,14 @@ const Maintenance = () => {
 
         <button type="submit">Add Task</button>
       </form>
+
+      {/* Download XML Button */}
+      <button onClick={handleDownloadXML}>Download XML</button>
+
+      {/* Upload XML */}
+      <h3>Import Maintenance Tasks from XML</h3>
+      <input type="file" accept=".xml" onChange={handleFileChange} />
+      <button onClick={handleUploadXML}>Upload XML</button>
     </div>
   );
 };

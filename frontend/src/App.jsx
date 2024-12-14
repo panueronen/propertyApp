@@ -3,7 +3,7 @@ import Home from './pages/Home';
 import Properties from './pages/Properties';
 import Tenants from './pages/Tenants';
 import Navbar from './components/Navbar';
-import Maintenance from './components/Maintenance';
+import Maintenance from './pages/Maintenance';
 
 const App = () => {
   return (
