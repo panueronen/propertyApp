@@ -95,7 +95,6 @@ exports.deleteMaintenanceRequest = async (req, res) => {
   };
 
   exports.importMaintenanceFromXML = async (req, res) => {
-    console.log("importing...")
     try {
       const parser = new xml2js.Parser();
       const xml = req.body.xml;
@@ -117,9 +116,7 @@ exports.deleteMaintenanceRequest = async (req, res) => {
         reportedAt: new Date(task.reportedAt[0]),
       }));
   
-      // Insert tasks into the database
       await Maintenance.insertMany(tasks);
-      console.log(tasks)
   
       res.status(201).json({ message: 'Maintenance tasks imported successfully' });
     } catch (error) {

@@ -5,12 +5,11 @@ const maintenanceController = require('../controllers/maintenanceController');
 router.get('/xml', maintenanceController.exportMaintenanceToXML);
 router.post('/xml', maintenanceController.importMaintenanceFromXML);
 
-// CRUD Endpoints for Maintenance
-router.get('/', maintenanceController.getAllMaintenanceRequests); // Get all maintenance requests
-router.get('/:id', maintenanceController.getMaintenanceById); // Get a single maintenance request by ID
-router.post('/', maintenanceController.createMaintenanceRequest); // Create a new maintenance request
-router.put('/:id', maintenanceController.updateMaintenanceRequest); // Update a maintenance request by ID
-router.delete('/:id', maintenanceController.deleteMaintenanceRequest); // Delete a maintenance request by ID
+router.get('/', maintenanceController.getAllMaintenanceRequests);
+router.get('/:id', maintenanceController.getMaintenanceById);
+router.post('/', maintenanceController.createMaintenanceRequest);
+router.put('/:id', maintenanceController.updateMaintenanceRequest);
+router.delete('/:id', maintenanceController.deleteMaintenanceRequest);
 
 
 module.exports = router;

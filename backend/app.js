@@ -11,8 +11,8 @@ app.use(cors({
 
 connectDB();
 
-app.use(express.json()); // Built-in body parser for JSON
-app.use(xmlparser()); // For parsing XML requests
+app.use(express.json());
+app.use(xmlparser());
 
 //Routes
 const propertyRoutes = require('./routes/propertyRoutes');
@@ -23,7 +23,6 @@ app.use('/api/properties', propertyRoutes);
 app.use('/api/maintenance', maintenanceRoutes);
 app.use('/api/tenants', tenantRoutes);
 
-//Log error stack
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).json({ message: 'Internal Server Error' });
